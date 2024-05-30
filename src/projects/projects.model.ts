@@ -1,10 +1,11 @@
-import { Column, DataType, Model, Table, ForeignKey, BelongsTo, BelongsToMany } from 'sequelize-typescript'
+import { Column, DataType, Model, Table, ForeignKey, BelongsTo, BelongsToMany, HasMany } from 'sequelize-typescript'
 import { Workspace } from '../workspaces/workspaces.model'
 import { User } from '../users/users.model'
-import { Role } from '../roles/roles.model'
-import { Group } from '../groups/groups.model'
-import { ProjectRoleForUser } from '../roles/project-roles-for-users.model'
-import { ProjectRoleForGroup } from '../roles/project-roles-for-groups.model'
+// import { Role } from '../roles/roles.model'
+// import { Group } from '../groups/groups.model'
+import { ProjectUser } from '../projects/projects-users.model'
+// import { ProjectRoleForUser } from '../roles/project-roles-for-users.model'
+// import { ProjectRoleForGroup } from '../roles/project-roles-for-groups.model'
 import { OrganizationProject } from '../organizations/organizations-projects.model'
 import { Organization } from '../organizations/organizations.model'
 import { Board } from '../boards/boards.model'
@@ -45,12 +46,18 @@ export class Project extends Model<Project, ProjectCreationAttrs> {
 
   @BelongsTo(() => Workspace, 'workspace_id')
   workspace: Workspace
+  
+  @BelongsToMany(() => User, { through: { model: () => ProjectUser, unique: false } })
+  users: User[]
+
+  @HasMany(() => ProjectUser, 'project_id')
+  project_users: ProjectUser[]
 
   // @BelongsToMany(() => Role, () => ProjectRoleForUser)
   // roles: Role[]
 
-  @BelongsToMany(() => Role, { through: { model: () => ProjectRoleForUser, unique: false } })
-  roles: Role[]
+  // @BelongsToMany(() => Role, { through: { model: () => ProjectRoleForUser, unique: false } })
+  // roles: Role[]
 
   // @BelongsToMany(() => User, { through: { model: () => ProjectRoleForUser, unique: false } })
   // users: User[]

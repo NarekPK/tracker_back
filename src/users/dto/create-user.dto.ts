@@ -9,6 +9,7 @@ export class CreateUserDto {
   readonly email?: string
   readonly password?: string
   readonly user_name?: string
+  readonly user_id?: string
   readonly profile_name?: string
   readonly workspace_id?: string
   readonly refresh_token?: string

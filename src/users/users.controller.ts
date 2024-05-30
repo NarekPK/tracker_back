@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Patch, Delete, UseGuards, Req, UsePipes } from '@nestjs/common'
+import { Body, Controller, Get, Post, Patch, Delete, UseGuards, Req, UsePipes, Param } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersService } from './users.service'
 // import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
@@ -46,15 +46,21 @@ export class UsersController {
   // }
 
   @UseGuards(AccessTokenGuard)
-  @Get('get-user')
-  getUserById(@Req() request: Request) {
+  @Get('get-me')
+  getUserMe(@Req() request: Request) {
     return this.usersService.getUserById(request.user['user_id'])
   }
 
   @UseGuards(AccessTokenGuard)
+  @Get('get-user/:id')
+  getUserById(@Param('id') id: string) {
+    return this.usersService.getUserById(id)
+  }
+
+  @UseGuards(AccessTokenGuard)
   @Patch('update-user')
-  updateUser(@Body() userDto: CreateUserDto, @Req() request: Request) {
-    return this.usersService.updateUser(userDto, request.user['user_id'])
+  updateUser(@Body() userDto: CreateUserDto) {
+    return this.usersService.updateUser(userDto)
   }
 
   @UseGuards(AccessTokenGuard)

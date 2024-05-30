@@ -5,8 +5,9 @@ import { BelongsTo, BelongsToMany, Column, DataType, HasMany, ForeignKey, Model,
 // import {Post} from '../posts/posts.model'
 import { Project } from '../projects/projects.model'
 import { Workspace } from '../workspaces/workspaces.model'
-import { Role } from '../roles/roles.model'
-import { ProjectRoleForUser } from '../roles/project-roles-for-users.model'
+// import { Role } from '../roles/roles.model'
+// import { ProjectRoleForUser } from '../roles/project-roles-for-users.model'
+import { ProjectUser } from '../projects/projects-users.model'
 import { Organization } from '../organizations/organizations.model'
 import { Group } from '../groups/groups.model'
 import { OrganizationRoleForUser } from '../roles/organization-roles-for-users.model'
@@ -61,8 +62,14 @@ export class User extends Model<User, UserCreationAttrs> {
   @BelongsTo(() => Workspace, 'workspace_id')
   workspace: Workspace
 
-  @BelongsToMany(() => Role, { through: { model: () => ProjectRoleForUser, unique: false } })
-  roles: Role[]
+  @BelongsToMany(() => Project, { through: { model: () => ProjectUser, unique: false } })
+  projects: Project[]
+
+  @HasMany(() => ProjectUser, 'user_id')
+  project_users: ProjectUser[]
+
+  // @BelongsToMany(() => Role, { through: { model: () => ProjectRoleForUser, unique: false } })
+  // roles: Role[]
 
   // @BelongsToMany(() => Project, { through: { model: () => ProjectRoleForUser, unique: false } })
   // projects: Project[]

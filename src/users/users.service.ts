@@ -38,8 +38,9 @@ export class UsersService {
     return user
   }
 
-  async updateUser(dto: CreateUserDto, user_id: string) {
-    await this.userRepository.update({ ...dto },{ where: { user_id }})
+  async updateUser(dto: CreateUserDto) {
+    const { user_id, ...dtoPrepared } = dto
+    await this.userRepository.update(dtoPrepared, { where: { user_id }})
     const user = this.getUserById(user_id)
     return user
   }

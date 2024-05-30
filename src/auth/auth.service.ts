@@ -83,7 +83,7 @@ export class AuthService {
   }
 
   async logout(user_id: string) {
-    this.usersService.updateUser({ refresh_token: null }, user_id)
+    this.usersService.updateUser({ refresh_token: null, user_id })
   }
 
   async refreshTokens(user_id: string, refreshToken: string) {
@@ -114,9 +114,9 @@ export class AuthService {
     return bcrypt.hash(data, 8)
   }
 
-  async updateRefreshToken(userId: string, refreshToken: string) {
-    const hashedRefreshToken = await this.hashData(refreshToken)
-    await this.usersService.updateUser({ refresh_token: hashedRefreshToken }, userId)
+  async updateRefreshToken(user_id: string, refresh_token: string) {
+    const hashedRefreshToken = await this.hashData(refresh_token)
+    await this.usersService.updateUser({ refresh_token: hashedRefreshToken, user_id })
   }
 
   getCookieWithJwtAccessToken(user_id: string, email: string, workspace_id: string) {

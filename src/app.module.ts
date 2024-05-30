@@ -11,7 +11,9 @@ import { User } from './users/users.model'
 import { Role } from './roles/roles.model'
 import { Permission } from './permissions/permissions.model'
 // import { RolePermission } from './roles/roles-permissions.model'
-import { ProjectRoleForUser } from './roles/project-roles-for-users.model'
+// import { ProjectRoleForUser } from './roles/project-roles-for-users.model'
+import { ProjectUser } from 'src/projects/projects-users.model'
+import { ProjectUserRole } from 'src/projects/projects-users-roles.model'
 import { Group } from './groups/groups.model'
 import { ProjectRoleForGroup } from './roles/project-roles-for-groups.model'
 import { Organization } from './organizations/organizations.model'
@@ -68,7 +70,8 @@ import { AuthModule } from './auth/auth.module'
         Role,
         // RolePermission,
         Project,
-        ProjectRoleForUser,
+        ProjectUser,
+        ProjectUserRole,
         Group,
         ProjectRoleForGroup,
         Organization,

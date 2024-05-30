@@ -14,3 +14,16 @@ export type TProjectRole = {
   role_id: string
   user_id: string
 }
+
+export type TProjectUserRole = {
+  id: string
+  project_id: string
+  roles: {
+    name: string,
+    role_id: string
+  }[]
+  user: {
+    profile_name: string,
+    user_id: string
+  }
+}
