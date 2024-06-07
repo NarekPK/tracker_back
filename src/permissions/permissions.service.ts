@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common'
 import { Permission } from './permissions.model'
 import { InjectModel } from '@nestjs/sequelize'
 import { CreatePermissionDto } from './dto/create-permission.dto'
-import { basePermissions } from './base-permissions'
+import { basePermissions } from './base-permissions-keys'
 
 @Injectable()
 export class PermissionsService {
   constructor(@InjectModel(Permission) private permissionRepository: typeof Permission) {
-    // this.createPermissions()
+    this.createPermissions()
   }
 
   // async createPermission(dto: CreatePermissionDto) {

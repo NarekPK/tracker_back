@@ -32,7 +32,7 @@ export class Role extends Model<Role, RoleCreationAttrs> {
   @Column({ type: DataType.TEXT })
   description: string
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING, defaultValue: '', allowNull: false })
   key: string
 
   @Column({ type: DataType.JSONB, allowNull: false })

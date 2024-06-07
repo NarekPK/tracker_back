@@ -1,15 +1,15 @@
 import { Column, DataType, Model, Table, ForeignKey, BelongsTo, BelongsToMany } from 'sequelize-typescript'
-import { Task } from '../tasks/tasks.model'
+import { Issue } from '../issues/issues.model'
 
-export interface TaskMediaCreationAttrs {
+export interface IssueMediaCreationAttrs {
   name: string
   file_path: string
   position: string
-  task_id: string
+  issue_id: string
 }
 
-@Table({tableName: 'tasks_media'})
-export class TaskMedia extends Model<TaskMedia, TaskMediaCreationAttrs> {
+@Table({tableName: 'issues_media'})
+export class IssueMedia extends Model<IssueMedia, IssueMediaCreationAttrs> {
 
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4, primaryKey: true, allowNull: false })
   media_id: string
@@ -23,11 +23,11 @@ export class TaskMedia extends Model<TaskMedia, TaskMediaCreationAttrs> {
   @Column({ type: DataType.SMALLINT, allowNull: false })
   position: string
 
-  @ForeignKey(() => Task)
+  @ForeignKey(() => Issue)
   @Column({ type: DataType.UUID, allowNull: false })
-  task_id: string
+  issue_id: string
 
-  @BelongsTo(() => Task, 'task_id')
-  tasks: Task
+  @BelongsTo(() => Issue, 'issue_id')
+  issues: Issue
 
 }

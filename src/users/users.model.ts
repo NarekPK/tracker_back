@@ -12,9 +12,9 @@ import { Organization } from '../organizations/organizations.model'
 import { Group } from '../groups/groups.model'
 import { OrganizationRoleForUser } from '../roles/organization-roles-for-users.model'
 import { GroupUser } from '../groups/groups-users.model'
-import { Task } from '../tasks/tasks.model'
-import { TaskObserver } from '../tasks/tasks-observers.model'
-import { TaskComment } from '../tasks-comments/tasks-comments.model'
+import { Issue } from '../issues/issues.model'
+import { IssueObserver } from '../issues/issues-observers.model'
+import { IssueComment } from '../issues-comments/issues-comments.model'
 
 export interface UserCreationAttrs {
   email: string
@@ -48,6 +48,9 @@ export class User extends Model<User, UserCreationAttrs> {
   @Column({ type: DataType.STRING, allowNull: false })
   password: string
 
+  @Column({ type: DataType.STRING, defaultValue: 'en-US', allowNull: false })
+  lang: string
+
   // @HasMany(() => Project, 'project_owner')
   // projects: Project[]
 
@@ -80,10 +83,10 @@ export class User extends Model<User, UserCreationAttrs> {
   @BelongsToMany(() => Group, () => GroupUser)
   groups: Group[]
 
-  @BelongsToMany(() => Task, () => TaskObserver)
-  tasks: Task[]
+  @BelongsToMany(() => Issue, () => IssueObserver)
+  issues: Issue[]
 
-  @HasMany(() => TaskComment, 'user_id')
-  task_comments: TaskComment[]
+  @HasMany(() => IssueComment, 'user_id')
+  issue_comments: IssueComment[]
 
 }

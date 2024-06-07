@@ -22,12 +22,12 @@ import { OrganizationRoleForUser } from './roles/organization-roles-for-users.mo
 import { GroupUser } from './groups/groups-users.model'
 import { OrganizationProject } from './organizations/organizations-projects.model'
 import { Project } from './projects/projects.model'
-import { Task } from './tasks/tasks.model'
-import { TaskObserver } from './tasks/tasks-observers.model'
-import { TaskMedia } from './tasks-media/tasks-media.model'
+import { Issue } from './issues/issues.model'
+import { IssueObserver } from './issues/issues-observers.model'
+import { IssueMedia } from './issues-media/issues-media.model'
 import { Board } from './boards/boards.model'
 import { ProjectBoard } from './boards/projects-boards.model'
-import { TaskComment } from './tasks-comments/tasks-comments.model'
+import { IssueComment } from './issues-comments/issues-comments.model'
 import { CustomFieldType } from './custom-field-types/custom-field-types.model'
 import { CustomField } from './custom-fields/custom-fields.model'
 import { ProjectCustomField } from './projects/projects-custom-fields.model'
@@ -36,10 +36,10 @@ import { RolesModule } from './roles/roles.module'
 import { ProjectsModule } from './projects/projects.module'
 import { GroupsModule } from './groups/groups.module'
 import { OrganizationsModule } from './organizations/organizations.module'
-import { TasksModule } from './tasks/tasks.module'
+import { IssuesModule } from './issues/issues.module'
 import { BoardsModule } from './boards/boards.module'
-import { TasksCommentsModule } from './tasks-comments/tasks-comments.module'
-import { TasksMediaModule } from './tasks-media/tasks-media.module'
+import { IssuesCommentsModule } from './issues-comments/issues-comments.module'
+import { IssuesMediaModule } from './issues-media/issues-media.module'
 import { CustomFieldTypesModule } from './custom-field-types/custom-field-types.module'
 import { CustomFieldsModule } from './custom-fields/custom-fields.module'
 import { AuthModule } from './auth/auth.module'
@@ -79,10 +79,10 @@ import { AuthModule } from './auth/auth.module'
         OrganizationRoleForGroup,
         GroupUser,
         OrganizationProject,
-        Task,
-        TaskObserver,
-        TaskMedia,
-        TaskComment,
+        Issue,
+        IssueObserver,
+        IssueMedia,
+        IssueComment,
         Board,
         ProjectBoard,
         CustomFieldType,
@@ -98,10 +98,10 @@ import { AuthModule } from './auth/auth.module'
     ProjectsModule,
     GroupsModule,
     OrganizationsModule,
-    TasksModule,
+    IssuesModule,
     BoardsModule,
-    TasksCommentsModule,
-    TasksMediaModule,
+    IssuesCommentsModule,
+    IssuesMediaModule,
     CustomFieldTypesModule,
     CustomFieldsModule,
     AuthModule,

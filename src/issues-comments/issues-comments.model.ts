@@ -1,15 +1,15 @@
 import { Column, DataType, Model, Table, ForeignKey, BelongsTo, BelongsToMany } from 'sequelize-typescript'
-import { Task } from '../tasks/tasks.model'
+import { Issue } from '../issues/issues.model'
 import { User } from '../users/users.model'
 
-export interface TaskCommentCreationAttrs {
+export interface IssueCommentCreationAttrs {
   text: string
-  task_id: string
+  issue_id: string
   user_id: string
 }
 
-@Table({tableName: 'tasks_comments'})
-export class TaskComment extends Model<TaskComment, TaskCommentCreationAttrs> {
+@Table({tableName: 'issues_comments'})
+export class IssueComment extends Model<IssueComment, IssueCommentCreationAttrs> {
 
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4, primaryKey: true, allowNull: false })
   comment_id: string
@@ -20,12 +20,12 @@ export class TaskComment extends Model<TaskComment, TaskCommentCreationAttrs> {
   @Column({ type: DataType.UUID, allowNull: true })
   comment_replied_to_id: string
 
-  @ForeignKey(() => Task)
+  @ForeignKey(() => Issue)
   @Column({ type: DataType.UUID, allowNull: false })
-  task_id: string
+  issue_id: string
 
-  @BelongsTo(() => Task, 'task_id')
-  tasks: Task
+  @BelongsTo(() => Issue, 'issue_id')
+  issues: Issue
 
   @ForeignKey(() => User)
   @Column({ type: DataType.UUID, allowNull: false })

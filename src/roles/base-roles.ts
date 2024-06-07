@@ -2,9 +2,9 @@
 
 export const baseRoles = [
   {
-      "name": "Наблюдатель",
+      "name": "RN_OBSERVER",
       "key": "",
-      "description": "Наблюдатель",
+      "description": "RD_OBSERVER",
       "permissions": [
           "profile_updateself",
           "user_read_basic"
@@ -12,9 +12,9 @@ export const baseRoles = [
       "workspace_id": ""
   },
   {
-      "name": "Автор задач",
+      "name": "RN_REPORTER",
       "key": "",
-      "description": "Автор задач может создавать новые задачи и комментарии, просматривать существующие задачи и комментарии, а также управлять своим профилем.",
+      "description": "RD_REPORTER",
       "permissions": [
           "project_read_basic",
           "profile_updateself",
@@ -31,9 +31,9 @@ export const baseRoles = [
       "workspace_id": ""
   },
   {
-      "name": "Администратор проекта",
+      "name": "RN_ADMIN",
       "key": "project-admin",
-      "description": "Администратор проекта имеет те же права доступа, что разработчик, и может управлять параметрами проекта, такими как исполнители, поля и рабочие процессы.",
+      "description": "RD_ADMIN",
       "permissions": [
           "organization_read",
           "project_create",
@@ -93,9 +93,9 @@ export const baseRoles = [
       "workspace_id": ""
   },
   {
-      "name": "Контрибьютор",
+      "name": "RN_CONTRIBUTOR",
       "key": "contributor",
-      "description": "Роль контрибьютора предназначается для пользователей, которые создают задачи и работают с ними. Контрибьюторы могут создавать новые задачи, добавлять комментарии, просматривать существующие задачи и комментарии, обновлять большинство атрибутов задач и управлять своими профилями.",
+      "description": "RD_CONTRIBUTOR",
       "permissions": [
           "organization_read",
           "project_read_basic",
@@ -137,9 +137,9 @@ export const baseRoles = [
       "workspace_id": ""
   },
   {
-      "name": "Системный администратор",
+      "name": "RN_SYSTEM_ADMIN",
       "key": "",
-      "description": "Администратор имеет права на выполнение любых операций.",
+      "description": "RD_SYSTEM_ADMIN",
       "permissions": [
           "organization_read",
           "organization_create",
@@ -209,9 +209,9 @@ export const baseRoles = [
       "workspace_id": ""
   },
   {
-      "name": "Читатель задач",
+      "name": "RN_ISSUE_READER",
       "key": "",
-      "description": "Читатель задач может только просматривать задачи и комментарии.",
+      "description": "RD_ISSUE_READER",
       "permissions": [
           "project_read_basic",
           "read_comment",

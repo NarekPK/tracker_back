@@ -1,14 +1,14 @@
 import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript'
 import { User } from '../users/users.model'
-import { Task } from './tasks.model'
+import { Issue } from './issues.model'
 
 
-@Table({tableName: 'tasks_observers', createdAt: false, updatedAt: false})
-export class TaskObserver extends Model<TaskObserver> {
+@Table({tableName: 'issues_observers', createdAt: false, updatedAt: false})
+export class IssueObserver extends Model<IssueObserver> {
 
-  @ForeignKey(() => Task)
+  @ForeignKey(() => Issue)
   @Column({ type: DataType.INTEGER, primaryKey: true })
-  task_id: number
+  issue_id: number
 
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, primaryKey: true })

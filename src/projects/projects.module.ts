@@ -7,12 +7,13 @@ import { Workspace } from '../workspaces/workspaces.model'
 import { User } from '../users/users.model'
 import { RolesModule } from '../roles/roles.module'
 import { UsersModule } from '../users/users.module'
+import { Issue } from '../issues/issues.model'
 
 @Module({
   controllers: [ProjectsController],
   providers: [ProjectsService],
   imports: [
-    SequelizeModule.forFeature([Project, Workspace, User]),
+    SequelizeModule.forFeature([Project, Workspace, User, Issue]),
     RolesModule,
     UsersModule
   ],

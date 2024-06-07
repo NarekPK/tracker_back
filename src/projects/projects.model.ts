@@ -12,6 +12,7 @@ import { Board } from '../boards/boards.model'
 import { ProjectBoard } from '../boards/projects-boards.model'
 import { CustomField } from '../custom-fields/custom-fields.model'
 import { ProjectCustomField } from '../projects/projects-custom-fields.model'
+import { Issue } from '../issues/issues.model'
 
 export interface ProjectCreationAttrs {
   name: string
@@ -73,5 +74,8 @@ export class Project extends Model<Project, ProjectCreationAttrs> {
 
   @BelongsToMany(() => CustomField, () => ProjectCustomField)
   custom_fields: CustomField[]
+
+  @HasMany(() => Issue, 'project_id')
+  issues: Issue[]
 
 }
