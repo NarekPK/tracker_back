@@ -7,7 +7,7 @@ import { basePermissions } from './base-permissions-keys'
 @Injectable()
 export class PermissionsService {
   constructor(@InjectModel(Permission) private permissionRepository: typeof Permission) {
-    this.createPermissions()
+    // this.createPermissions()
   }
 
   // async createPermission(dto: CreatePermissionDto) {

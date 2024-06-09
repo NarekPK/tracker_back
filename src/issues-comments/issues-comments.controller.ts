@@ -1,18 +1,34 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Delete, Patch, UseGuards } from '@nestjs/common'
 import { IssuesCommentsService } from './issues-comments.service'
 import { CreateIssueCommentDto } from './dto/create-issue-comment.dto'
+import { AccessTokenGuard } from '../common/guards/access-token.guard'
 
-@Controller('issues-media')
+@Controller('issues-comments')
 export class IssuesCommentsController {
   constructor(private issuesCommentsService: IssuesCommentsService) {}
 
-  @Post()
-  create(@Body() dto: CreateIssueCommentDto) {
-    return this.issuesCommentsService.createIssueComment(dto)
+  @UseGuards(AccessTokenGuard)
+  @Post('add-comment')
+  addIssueComment(@Body() issueCommentDto: CreateIssueCommentDto) {
+    return this.issuesCommentsService.addIssueComment(issueCommentDto)
   }
 
-  @Get('/:value')
-  getByValue(@Param('value') value: string) {
-    return this.issuesCommentsService.getIssueCommentByValue(value)
+  @UseGuards(AccessTokenGuard)
+  @Get('get-comments/:id')
+  getIssueComments(@Param('id') id: string) {
+    return this.issuesCommentsService.getIssueComments({ issue_id: id })
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Delete('delete-comment')
+  async deleteIssueComment(@Body() commentInfo: { comment_id: string }) {
+    return await this.issuesCommentsService.deleteIssueComment(commentInfo)
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Patch('update-comment')
+  updateIssueComment(@Body() commentInfo: CreateIssueCommentDto) {
+    return this.issuesCommentsService.updateIssueComment(commentInfo)
+  }
+
 }
