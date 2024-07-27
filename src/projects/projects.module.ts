@@ -8,12 +8,13 @@ import { User } from '../users/users.model'
 import { RolesModule } from '../roles/roles.module'
 import { UsersModule } from '../users/users.module'
 import { Issue } from '../issues/issues.model'
+import { Board } from '../boards/boards.model'
 
 @Module({
   controllers: [ProjectsController],
   providers: [ProjectsService],
   imports: [
-    SequelizeModule.forFeature([Project, Workspace, User, Issue]),
+    SequelizeModule.forFeature([Project, Workspace, User, Issue, Board]),
     RolesModule,
     UsersModule
   ],

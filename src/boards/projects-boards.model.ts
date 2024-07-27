@@ -1,4 +1,4 @@
-import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript'
+import { Column, DataType, ForeignKey, Model, Table, BelongsTo } from 'sequelize-typescript'
 import { Board } from '../boards/boards.model'
 import { Project } from '../projects/projects.model'
 
@@ -13,5 +13,11 @@ export class ProjectBoard extends Model<ProjectBoard> {
   @ForeignKey(() => Board)
   @Column({ type: DataType.UUID, primaryKey: true })
   board_id: string
+
+  @BelongsTo(() => Project, 'project_id')
+  project: Project
+
+  @BelongsTo(() => Board, 'board_id')
+  board: Board
 
 }

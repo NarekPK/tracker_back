@@ -21,6 +21,12 @@ export class IssuesController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @Get('get-project-issues/:id')
+  getProjectIssues(@Param('id') id: string) {
+    return this.issuesService.getProjectIssues(id)
+  }
+
+  @UseGuards(AccessTokenGuard)
   @Get('get-issue/:id')
   getIssueById(@Param('id') id: string) {
     return this.issuesService.getIssueById(id)

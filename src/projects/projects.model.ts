@@ -22,7 +22,7 @@ export interface ProjectCreationAttrs {
   workspace_id: string
 }
 
-@Table({tableName: 'projects'})
+@Table({tableName: 'projects', createdAt: false, updatedAt: false})
 export class Project extends Model<Project, ProjectCreationAttrs> {
 
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4, primaryKey: true, allowNull: false })
@@ -31,7 +31,7 @@ export class Project extends Model<Project, ProjectCreationAttrs> {
   @Column({ type: DataType.STRING, allowNull: false })
   name: string
 
-  @Column({ type: DataType.TEXT })
+  @Column({ type: DataType.TEXT, allowNull: true })
   description: string
 
   @ForeignKey(() => User)
@@ -54,6 +54,15 @@ export class Project extends Model<Project, ProjectCreationAttrs> {
   @HasMany(() => ProjectUser, 'project_id')
   project_users: ProjectUser[]
 
+  @BelongsToMany(() => CustomField, { through: { model: () => ProjectCustomField, unique: false } })
+  custom_fields: CustomField[]
+
+  @HasMany(() => ProjectCustomField, 'project_id')
+  project_custom_fields: ProjectCustomField[]
+
+  @HasMany(() => Issue, 'project_id')
+  issues: Issue[]
+
   // @BelongsToMany(() => Role, () => ProjectRoleForUser)
   // roles: Role[]
 
@@ -69,13 +78,10 @@ export class Project extends Model<Project, ProjectCreationAttrs> {
   @BelongsToMany(() => Organization, () => OrganizationProject)
   organizations: Organization[]
 
-  @BelongsToMany(() => Board, () => ProjectBoard)
+  @BelongsToMany(() => Board, { through: { model: () => ProjectBoard, unique: false } })
   boards: Board[]
 
-  @BelongsToMany(() => CustomField, () => ProjectCustomField)
-  custom_fields: CustomField[]
-
-  @HasMany(() => Issue, 'project_id')
-  issues: Issue[]
+  @HasMany(() => ProjectBoard, 'project_id')
+  project_boards: ProjectBoard[]
 
 }

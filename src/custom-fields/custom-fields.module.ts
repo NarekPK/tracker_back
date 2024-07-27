@@ -12,5 +12,8 @@ import { Workspace } from '../workspaces/workspaces.model'
   imports: [
     SequelizeModule.forFeature([CustomField, CustomFieldType, Workspace])
   ],
+  exports: [
+    CustomFieldsService
+  ]
 })
 export class CustomFieldsModule {}

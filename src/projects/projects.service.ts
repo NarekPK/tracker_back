@@ -7,23 +7,28 @@ import { UsersService } from '../users/users.service'
 import { Role } from 'src/roles/roles.model'
 import { User } from 'src/users/users.model'
 import { ProjectUser } from './projects-users.model'
+import { ProjectCustomField } from 'src/projects/projects-custom-fields.model'
+import { CustomField } from 'src/custom-fields/custom-fields.model'
 
 const PROJECT_ADMIN_KEY = 'project-admin'
 const PROJECT_INFO_QUERY = (filters) => {
-  return { where: filters, include: {
-    model: ProjectUser,
-    attributes: ['id', 'project_id'],
-    include: [
-      {
-        model: Role,
-        through: { attributes: [] },
-        attributes: ['name', 'role_id']
-      },
-      {
-        model: User,
-        attributes: ['profile_name', 'user_id']
-      }
-    ]}
+  return {
+    where: filters,
+    include: {
+      model: ProjectUser,
+      attributes: ['id', 'project_id'],
+      include: [
+        {
+          model: Role,
+          through: { attributes: [] },
+          attributes: ['name', 'role_id']
+        },
+        {
+          model: User,
+          attributes: ['profile_name', 'user_id']
+        }
+      ]
+    }
   }
 }
 
@@ -56,18 +61,22 @@ export class ProjectsService {
 
   async createProject(dto: CreateProjectDto) {
     const project = await this.projectRepository.create(dto)
-    const { createdAt, updatedAt, ...newProject } = project.toJSON()
     const role = await this.rolesService.getRoleByKey(PROJECT_ADMIN_KEY)
-    const user = await this.usersService.getUserById(newProject.project_owner)
+    const user = await this.usersService.getUserById(project.project_owner)
     if (project && role && user) {
-      const newProjectUser = await project.$add('user', user)
-      newProjectUser[0].$add('role', role)
+      await this.addProjectRoleToUser(project, user, role)
     }
-    return newProject
+    return project
+  }
+
+  
+  async addProjectRoleToUser(project, user, role) {
+    const newProjectUser = await project.$add('user', user)
+    await newProjectUser[0].$add('role', role)
   }
 
   async getWorkspaceProjects(workspace_id: string) {
-    const projects = await this.projectRepository.findAll({ where: { workspace_id }, attributes: { exclude: ['createdAt', 'updatedAt']}})
+    const projects = await this.projectRepository.findAll({ where: { workspace_id }})
     return projects
   }
 
@@ -131,4 +140,55 @@ export class ProjectsService {
     return { deleted: true }
   }
 
+  async addCustomFieldsToProject(project, customFields) {
+    if (project && customFields) {
+      const reqList = customFields.map(async (field, index) => {
+        return project.$add('custom_fields', field, { through: { position: index }})
+      })
+
+      await Promise.all(reqList)
+      return { added: true }
+    }
+    throw new HttpException('Проект или кастомные поля не найдены', HttpStatus.NOT_FOUND)
+  }
+
+  async getProjectCustomFields(projectInfo : { project_id: string }) {
+    // const project = await this.projectRepository.findOne(PROJECT_INFO_QUERY(projectInfo))
+    const project = await this.projectRepository.findOne({ where: projectInfo, include: {
+      model: ProjectCustomField,
+      attributes: ['position'],
+      include: [
+        {
+          model: CustomField,
+          attributes: { exclude: ['workspace_id']}
+        }
+      ]}
+    })
+
+    const projectCustomFields = project.toJSON().project_custom_fields.map(i => {
+      return { ...i.custom_field, position: i.position }
+    }).sort((a, b) => a.position - b.position)
+
+    return projectCustomFields
+  }
+
+
 }
+
+// const PROJECT_INFO_QUERY = (filters) => {
+//   return { where: filters, include: {
+//     model: ProjectUser,
+//     attributes: ['id', 'project_id'],
+//     include: [
+//       {
+//         model: Role,
+//         through: { attributes: [] },
+//         attributes: ['name', 'role_id']
+//       },
+//       {
+//         model: User,
+//         attributes: ['profile_name', 'user_id']
+//       }
+//     ]}
+//   }
+// }

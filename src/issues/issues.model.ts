@@ -4,11 +4,12 @@ import { Project } from '../projects/projects.model'
 import { IssueObserver } from '../issues/issues-observers.model'
 import { IssueComment } from '../issues-comments/issues-comments.model'
 import { Workspace } from '../workspaces/workspaces.model'
+import { TIssueCustomField } from './dto/create-issue.dto'
 
 export interface IssueCreationAttrs {
   name: string
   description: string
-  custom_fields_value: string[]
+  custom_fields: TIssueCustomField[]
   issue_id: string
   project_id: string
 }
@@ -30,7 +31,7 @@ export class Issue extends Model<Issue, IssueCreationAttrs> {
   issue_author: string
 
   @Column({ type: DataType.JSONB, allowNull: false, defaultValue: [] })
-  custom_fields_value: string[]
+  custom_fields: TIssueCustomField[]
 
   @ForeignKey(() => Project)
   @Column({ type: DataType.UUID, allowNull: false })

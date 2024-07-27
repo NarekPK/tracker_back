@@ -55,4 +55,10 @@ export class ProjectsController {
   async deleteProjectRoles(@Body() projectRoles: TProjectUserRole[]) {
     return await this.projectsService.deleteProjectRoles(projectRoles)
   }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('get-project-custom-fields/:id')
+  getProjectCustomFields(@Param('id') id: string) {
+    return this.projectsService.getProjectCustomFields({ project_id: id })
+  }
 }

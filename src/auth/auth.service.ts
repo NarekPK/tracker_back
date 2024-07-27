@@ -7,9 +7,54 @@ import { CreateUserDto } from '../users/dto/create-user.dto'
 import { UsersService } from '../users/users.service'
 import { WorkspacesService } from '../workspaces/workspaces.service'
 import { RolesService } from '../roles/roles.service'
+import { ProjectsService } from '../projects/projects.service'
+import { CustomFieldsService } from '../custom-fields/custom-fields.service'
+import { IssuesService } from '../issues/issues.service'
+import { BoardsService } from '../boards/boards.service'
 import * as bcrypt from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt'
 import { AuthDto } from './dto/auth.dto'
+
+const getBaseColumnOptions = (options) => {
+  return [
+    {
+      fields: [
+        {
+          id: options.find(o => o.name === 'CF_SUBMITTED').id,
+          name: 'CF_SUBMITTED'
+        }
+      ],
+      position: 0
+    },
+    {
+      fields: [
+        {
+          id: options.find(o => o.name === 'CF_OPEN').id,
+          name: 'CF_OPEN'
+        },
+      ],
+      position: 1
+    },
+    {
+      fields: [
+        {
+          id: options.find(o => o.name === 'CF_IN_PROGRESS').id,
+          name: 'CF_IN_PROGRESS'
+        },
+      ],
+      position: 2
+    },
+    {
+      fields: [
+        {
+          id: options.find(o => o.name === 'CF_FIXED').id,
+          name: 'CF_FIXED'
+        }
+      ],
+      position: 3
+    }
+  ]
+}
 
 @Injectable()
 export class AuthService {
@@ -17,6 +62,10 @@ export class AuthService {
     private usersService: UsersService,
     private workspacesService: WorkspacesService,
     private rolesService: RolesService,
+    private customFieldsService: CustomFieldsService,
+    private projectsService: ProjectsService,
+    private issuesService: IssuesService,
+    private boardsService: BoardsService,
     private jwtService: JwtService
   ) {}
   async register(createUserDto: CreateUserDto): Promise<any> {
@@ -43,6 +92,33 @@ export class AuthService {
 
     if (newWorkspace?.workspace_id) {
       await this.rolesService.createBaseRoles(newWorkspace.workspace_id)
+      const customFields = await this.customFieldsService.createBaseCustomFields(newWorkspace.workspace_id)
+      const project = await this.projectsService.createProject({
+        name: 'Demo',
+        description: null,
+        project_owner: newUser.user_id,
+        workspace_id: newWorkspace?.workspace_id
+      })
+      await this.projectsService.addCustomFieldsToProject(project, customFields)
+      await this.issuesService.createDemoIssues({
+        issue_author: newUser.user_id,
+        project_id: project.project_id,
+        workspace_id: newWorkspace?.workspace_id
+      }, customFields)
+      const board = await this.boardsService.createBoard({
+          name: 'Demo Board',
+          workspace_id: newWorkspace?.workspace_id
+        },
+        project.project_id
+      )
+      const stateField = customFields.find(f => f.key === 'state')
+
+      await this.boardsService.updateBoard({
+          columns_field_id: stateField.custom_field_id,
+          columns_options: getBaseColumnOptions(stateField.options),
+          board_id: board.board_id
+        }
+      )
     }
 
     const accessTokenCookie = this.getCookieWithJwtAccessToken(newUser.user_id, newUser.email, newUser.workspace_id)
