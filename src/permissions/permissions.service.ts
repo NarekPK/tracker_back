@@ -15,11 +15,6 @@ export class PermissionsService {
   //   return permission
   // }
 
-  // async getPermissions() {
-  //   const permissions = await this.permissionRepository.findAll({include: { all: true }})
-  //   return permissions
-  // }
-
   async createPermissions() {
     const permissions = await this.permissionRepository.bulkCreate(basePermissions)
     return permissions

@@ -1,71 +1,62 @@
 import { Body, Controller, Get, Post, Patch, Delete, UseGuards, Req, UsePipes, Param } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersService } from './users.service'
-// import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { User } from './users.model'
-// import { JwtAuthGuard } from '../auth/jwt-auth.guard'
-// import { Roles } from '../auth/roles-auth.decorator'
-// import { RolesGuard } from '../auth/roles.guard'
-// import { AddRoleDto } from './dto/add-role.dto'
-// import { ValidationPipe } from '../pipes/validation.pipe'
 import { AccessTokenGuard } from '../common/guards/access-token.guard'
 import { Request } from 'express'
 
-// @ApiTags('Пользователи')
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
 
   constructor(private usersService: UsersService) {}
 
-  // @ApiOperation({summary: 'Создание пользователя'})
-  // @ApiResponse({status: 200, type: User})
+  @ApiOperation({summary: 'Create user'})
+  @ApiResponse({status: 200, type: User})
   @UseGuards(AccessTokenGuard)
-  @Post('create-user')
+  @Post()
   createUser(@Body() userDto: CreateUserDto) {
     return this.usersService.createUser(userDto)
   }
 
-  // @ApiOperation({summary: 'Получить всех пользователей'})
-  // @ApiResponse({status: 200, type: [User]})
-  // @Roles('ADMIN')
-  // @UseGuards(RolesGuard)
+  @ApiOperation({summary: 'Get current workspace users'})
+  @ApiResponse({status: 200, type: [User]})
   @UseGuards(AccessTokenGuard)
-  @Get('get-users')
+  @Get()
   getWorkspaceUsers(@Req() request: Request) {
     return this.usersService.getWorkspaceUsers(request.user['workspace_id'])
   }
 
-  // @ApiOperation({summary: 'Получить всех пользователей'})
-  // @ApiResponse({status: 200, type: [User]})
-  // @Roles('ADMIN')
-  // @UseGuards(RolesGuard)
-  // @UseGuards(AccessTokenGuard)
-  // @Get()
-  // getUserByEmail(@Body() email: string) {
-  //   return this.usersService.getUserByEmail(email)
-  // }
-
+  @ApiOperation({summary: 'Get current user'})
+  @ApiResponse({status: 200, type: User})
   @UseGuards(AccessTokenGuard)
-  @Get('get-me')
+  @Get('me')
   getUserMe(@Req() request: Request) {
     return this.usersService.getUserById(request.user['user_id'])
   }
 
+  @ApiOperation({summary: 'Get user'})
+  @ApiResponse({status: 200, type: User})
   @UseGuards(AccessTokenGuard)
-  @Get('get-user/:id')
+  @Get(':id')
   getUserById(@Param('id') id: string) {
     return this.usersService.getUserById(id)
   }
 
+  @ApiOperation({summary: 'Update user'})
+  @ApiResponse({status: 200, type: User})
   @UseGuards(AccessTokenGuard)
-  @Patch('update-user')
-  updateUser(@Body() userDto: CreateUserDto) {
-    return this.usersService.updateUser(userDto)
+  @Patch(':id')
+  updateUser(@Param('id') id: string, @Body() userDto: CreateUserDto) {
+    return this.usersService.updateUser(id, userDto)
   }
 
+  @ApiOperation({summary: 'Delete user'})
+  @ApiResponse({status: 200, type: Boolean })
   @UseGuards(AccessTokenGuard)
-  @Delete('delete-user')
-  deleteUser(@Body() userInfo: { user_id: string }) {
-    return this.usersService.deleteUser(userInfo)
+  @Delete(':id')
+  deleteUser(@Param('id') id: string) {
+    return this.usersService.deleteUser(id)
   }
 }

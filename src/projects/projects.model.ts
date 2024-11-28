@@ -13,6 +13,7 @@ import { ProjectBoard } from '../boards/projects-boards.model'
 import { CustomField } from '../custom-fields/custom-fields.model'
 import { ProjectCustomField } from '../projects/projects-custom-fields.model'
 import { Issue } from '../issues/issues.model'
+import {ApiProperty} from '@nestjs/swagger'
 
 export interface ProjectCreationAttrs {
   name: string
@@ -25,15 +26,19 @@ export interface ProjectCreationAttrs {
 @Table({tableName: 'projects', createdAt: false, updatedAt: false})
 export class Project extends Model<Project, ProjectCreationAttrs> {
 
+  @ApiProperty({ example: '1faeb6ef-9b74-4315-93d6-dde1c52a0f87', description: 'Unique identifier'})
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4, primaryKey: true, allowNull: false })
   project_id: string
 
+  @ApiProperty({ example: 'Project', description: 'Name'})
   @Column({ type: DataType.STRING, allowNull: false })
   name: string
 
+  @ApiProperty({ example: '', description: 'Description'})
   @Column({ type: DataType.TEXT, allowNull: true })
   description: string
 
+  @ApiProperty({ example: '1faeb6ef-9b74-4315-93d6-dde1c52a0f87', description: 'Project owner'})
   @ForeignKey(() => User)
   @Column({ type: DataType.UUID, allowNull: false })
   project_owner: string

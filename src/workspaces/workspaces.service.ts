@@ -12,9 +12,6 @@ export class WorkspacesService {
 
   async createWorkspace(dto: CreateWorkspaceDto) {
     const workspace = await this.workspaceRepository.create(dto)
-    // const role = await this.roleService.getRoleByValue('ADMIN')
-    // await workspace.$set('roles', [role.id])
-    // workspace.roles = [role]
     return workspace
   }
 

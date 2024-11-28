@@ -5,11 +5,16 @@ import { RefreshTokenGuard } from '../common/guards/refresh-token.guard'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { AuthService } from './auth.service'
 import { AuthDto } from './dto/auth.dto'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { User } from '../users/users.model'
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiOperation({summary: 'Register user'})
+  @ApiResponse({status: 200, type: User})
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto, @Req() request: Request) {
     const {
@@ -26,6 +31,8 @@ export class AuthController {
     return user
   }
 
+  @ApiOperation({summary: 'Login user'})
+  @ApiResponse({status: 200, type: User})
   @HttpCode(200)
   @Post('login')
   async login(@Body() authData: AuthDto, @Req() request: Request) {
@@ -43,6 +50,8 @@ export class AuthController {
     return user
   }
 
+  @ApiOperation({summary: 'Logout user'})
+  @ApiResponse({status: 200, type: Boolean})
   @UseGuards(AccessTokenGuard)
   @Get('logout')
   logout(@Req() request: Request) {
@@ -55,6 +64,8 @@ export class AuthController {
     return { logout: true }
   }
 
+  @ApiOperation({summary: 'Refresh tokens'})
+  @ApiResponse({status: 200, type: Boolean})
   @UseGuards(RefreshTokenGuard)
   @Get('refresh')
   async refreshTokens(@Req() request: Request) {

@@ -12,9 +12,6 @@ export class CustomFieldTypesService {
 
   async createCustomFieldType(dto: CreateCustomFieldTypeDto) {
     const customFieldType = await this.customFieldTypeRepository.create(dto)
-    // const role = await this.roleService.getRoleByValue('ADMIN')
-    // await user.$set('roles', [role.id])
-    // user.roles = [role]
     return customFieldType
   }
 

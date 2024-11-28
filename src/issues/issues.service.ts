@@ -68,14 +68,14 @@ export class IssuesService {
     return issues
   }
 
-  async updateIssue(dto: CreateIssueDto) {
-    await this.issueRepository.update(dto, { where: { issue_id: dto.issue_id }})
-    const issue = this.getIssueById(dto.issue_id)
+  async updateIssue(issue_id: string, dto: CreateIssueDto) {
+    await this.issueRepository.update(dto, { where: { issue_id }})
+    const issue = this.getIssueById(issue_id)
     return issue
   }
 
-  async deleteIssue(issueInfo: { issue_id: string }) {
-    await this.issueRepository.destroy({ where: issueInfo})
+  async deleteIssue(issue_id: string) {
+    await this.issueRepository.destroy({ where: { issue_id }})
     return { deleted: true }
   }
 

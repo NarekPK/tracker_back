@@ -1,5 +1,5 @@
 import { BelongsTo, BelongsToMany, Column, DataType, HasMany, ForeignKey, Model, Table } from 'sequelize-typescript'
-// import {ApiProperty} from '@nestjs/swagger'
+import {ApiProperty} from '@nestjs/swagger'
 // import {Role} from '../roles/roles.model'
 // import {UserRoles} from '../roles/user-roles.model'
 // import {Post} from '../posts/posts.model'
@@ -27,34 +27,34 @@ export interface UserCreationAttrs {
 
 @Table({tableName: 'users'})
 export class User extends Model<User, UserCreationAttrs> {
-  // @ApiProperty({example: '1', description: 'Уникальный идентификатор'})
-  // @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  // id: number
-
+  @ApiProperty({ example: '1faeb6ef-9b74-4315-93d6-dde1c52a0f87', description: 'Unique identifier'})
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4, primaryKey: true, allowNull: false })
   user_id: string
 
+  @ApiProperty({ example: 'admin', description: 'Name'})
   @Column({ type: DataType.STRING, allowNull: false })
   user_name: string
 
+  @ApiProperty({ example: 'admin', description: 'Profile name'})
   @Column({ type: DataType.STRING, allowNull: false })
   profile_name: string
 
-  // @ApiProperty({example: 'user@mail.ru', description: 'Почтовый адрес'})
+  @ApiProperty({example: 'user@mail.ru', description: 'Email'})
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
   email: string
 
-  // @ApiProperty({example: '12345678', description: 'Пароль'})
+  @ApiProperty({example: '12345678', description: 'Password'})
   @Column({ type: DataType.STRING, allowNull: false })
   password: string
 
+  @ApiProperty({example: 'en-US', description: 'Language'})
   @Column({ type: DataType.STRING, defaultValue: 'en-US', allowNull: false })
   lang: string
 
   // @HasMany(() => Project, 'project_owner')
   // projects: Project[]
 
-  // @ApiProperty({example: '12345678', description: 'Пароль'})
+  // @ApiProperty({example: 'token', description: 'Refresh token'})
   @Column({ type: DataType.TEXT, allowNull: true })
   refresh_token: string
 

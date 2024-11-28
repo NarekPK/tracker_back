@@ -11,9 +11,6 @@ export class CustomFieldsService {
 
   // async createCustomField(dto: CreateCustomFieldDto) {
   //   const customField = await this.customFieldRepository.create(dto)
-  //   // const role = await this.roleService.getRoleByValue('ADMIN')
-  //   // await user.$set('roles', [role.id])
-  //   // user.roles = [role]
   //   return customField
   // }
 
@@ -33,8 +30,8 @@ export class CustomFieldsService {
     return customFields
   }
 
-  async deleteCustomField(fieldInfo: { custom_field_id: string }) {
-    await this.customFieldRepository.destroy({ where: fieldInfo})
+  async deleteCustomField(custom_field_id: string) {
+    await this.customFieldRepository.destroy({ where: { custom_field_id }})
     return { deleted: true }
   }
 }

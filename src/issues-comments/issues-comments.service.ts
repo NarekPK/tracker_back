@@ -27,20 +27,20 @@ export class IssuesCommentsService {
     return comments
   }
 
-  async deleteIssueComment(commentInfo: { comment_id: string }) {
-    await this.issueCommentRepository.destroy({ where: commentInfo})
-    return { deleted: true }
-  }
-
   async getCommentById(comment_id: string) {
     const comment = await this.issueCommentRepository.findOne({ where: { comment_id } })
     return comment
   }
 
-  async updateIssueComment(dto: CreateIssueCommentDto) {
-    await this.issueCommentRepository.update(dto, { where: { comment_id: dto.comment_id }})
-    const comment = this.getCommentById(dto.comment_id)
+  async updateIssueComment(comment_id: string, dto: CreateIssueCommentDto) {
+    await this.issueCommentRepository.update(dto, { where: { comment_id }})
+    const comment = this.getCommentById(comment_id)
     return comment
+  }
+
+  async deleteIssueComment(comment_id: string) {
+    await this.issueCommentRepository.destroy({ where: { comment_id }})
+    return { deleted: true }
   }
 
 }

@@ -14,10 +14,12 @@ export class BoardsService {
     private projectsService: ProjectsService,
   ) {}
 
-  async createBoard(dto: CreateBoardDto, project_id: string) {
+  async createBoard(dto: CreateBoardDto) {
     const board = await this.boardRepository.create(dto)
-    const project = await this.projectsService.getProjectById(project_id)
-    await this.addProjectToBoard(board, project)
+    if (dto.project_id) {
+      const project = await this.projectsService.getProjectById(dto.project_id)
+      await this.addProjectToBoard(board, project)
+    }
     return board
   }
 
@@ -42,18 +44,18 @@ export class BoardsService {
   }
 
   async getBoardById(board_id: string) {
-    const board = await this.boardRepository.findOne({ where: { board_id } })
+    const board = await this.boardRepository.findOne({ where: { board_id }})
     return board
   }
 
-  async updateBoard(dto: UpdateBoardDto) {
-    await this.boardRepository.update(dto, { where: { board_id: dto.board_id }})
-    const board = this.getBoardById(dto.board_id)
+  async updateBoard(board_id: string, dto: UpdateBoardDto) {
+    await this.boardRepository.update(dto, { where: { board_id }})
+    const board = this.getBoardById(board_id)
     return board
   }
 
-  async deleteBoard(boardInfo: { board_id: string }) {
-    await this.boardRepository.destroy({ where: boardInfo})
+  async deleteBoard(board_id: string) {
+    await this.boardRepository.destroy({ where: { board_id }})
     return { deleted: true }
   }
 

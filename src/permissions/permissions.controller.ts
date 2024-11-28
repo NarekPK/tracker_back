@@ -1,36 +1,20 @@
 import { Controller, Body, Get, Post, UseGuards } from '@nestjs/common'
 import { PermissionsService } from './permissions.service'
 import { CreatePermissionDto } from './dto/create-permission.dto'
+import { Permission } from './permissions.model'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { AccessTokenGuard } from '../common/guards/access-token.guard'
 
+@ApiTags('Permissions')
 @Controller('permissions')
 export class PermissionsController {
 
   constructor(private permissionsService: PermissionsService) {}
 
-  // @ApiOperation({summary: 'Создание пользователя'})
-  // @ApiResponse({status: 200, type: User})
-  // @Post()
-  // create(@Body() permissionDto: CreatePermissionDto) {
-  //   return this.permissionsService.createPermission(permissionDto)
-  // }
-
-  // @ApiOperation({summary: 'Получить всех пользователей'})
-  // @ApiResponse({status: 200, type: [User]})
-  // @Roles('ADMIN')
-  // @UseGuards(RolesGuard)
-  // @Get()
-  // getPermissions() {
-  //   return this.permissionsService.getPermissions()
-  // }
-
-  // @Post('create')
-  // createPermissions() {
-  //   return this.permissionsService.createPermissions()
-  // }
-
+  @ApiOperation({summary: 'Get base permissions'})
+  @ApiResponse({status: 200, type: [Permission]})
   @UseGuards(AccessTokenGuard)
-  @Get('get-base-permissions')
+  @Get()
   getBasePermissions() {
     return this.permissionsService.getBasePermissions()
   }

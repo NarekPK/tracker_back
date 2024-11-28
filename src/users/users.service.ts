@@ -16,9 +16,6 @@ export class UsersService {
     const name = dto.email.split('@')[0]
     const hash = await bcrypt.hash(dto.password, 8)
     const user = await this.userRepository.create({ ...dto, password: hash, user_name: name, profile_name: name })
-    // const role = await this.roleService.getRoleByValue('ADMIN')
-    // await user.$set('roles', [role.id])
-    // user.roles = [role]
     const { password, refresh_token, updatedAt, ...newUser } = user.toJSON()
     return newUser
   }
@@ -38,15 +35,14 @@ export class UsersService {
     return user
   }
 
-  async updateUser(dto: CreateUserDto) {
-    const { user_id, ...dtoPrepared } = dto
-    await this.userRepository.update(dtoPrepared, { where: { user_id }})
+  async updateUser(user_id: string, dto: CreateUserDto) {
+    await this.userRepository.update(dto, { where: { user_id }})
     const user = this.getUserById(user_id)
     return user
   }
 
-  async deleteUser(userInfo: { user_id: string }) {
-    await this.userRepository.destroy({ where: userInfo})
+  async deleteUser(user_id: string) {
+    await this.userRepository.destroy({ where: { user_id }})
     return { deleted: true }
   }
 

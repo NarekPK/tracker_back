@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import * as cookieParser from 'cookie-parser'
-// import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 // import { JwtAuthGuard } from './auth/jwt-auth.guard'
 // import { ValidationPipe } from './pipes/validation.pipe'
 
@@ -9,14 +9,14 @@ async function start() {
   const PORT = process.env.PORT || 5000
   const app = await NestFactory.create(AppModule)
 
-  // const config = new DocumentBuilder()
-  //   .setTitle('Tracker')
-  //   .setDescription('Документация REST API')
-  //   .setVersion('1.0.0')
-  //   .addTag('Tracker Docs')
-  //   .build()
-  // const document = SwaggerModule.createDocument(app, config)
-  // SwaggerModule.setup('/api/docs', app, document)
+  const config = new DocumentBuilder()
+    .setTitle('Tracker')
+    .setDescription('Документация REST API')
+    .setVersion('1.0.0')
+    .addTag('Tracker Docs')
+    .build()
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('/api/docs', app, document)
 
   // app.useGlobalPipes(new ValidationPipe())
 
@@ -29,7 +29,10 @@ async function start() {
   } else {
     app.enableCors({
       allowedHeaders: ['Content-Type'],
-      origin: true,
+      origin: [
+        'http://narekio.online',
+        'http://localhost',
+      ],
       credentials: true,
     });
   }

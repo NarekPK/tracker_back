@@ -25,11 +25,6 @@ export class RolesService {
     return roles
   }
 
-  async getRoleByValue(value: string) {
-    const role = await this.roleRepository.findOne({where: {value}})
-    return role
-  }
-
   async getRoleByKey(key: string) {
     const role = await this.roleRepository.findOne({ where: { key } })
     return role
@@ -40,14 +35,14 @@ export class RolesService {
     return role
   }
 
-  async updateRole(dto: CreateRoleDto) {
-    await this.roleRepository.update(dto, { where: { role_id: dto.role_id }})
-    const role = this.getRoleById(dto.role_id)
+  async updateRole(role_id: string, dto: CreateRoleDto) {
+    await this.roleRepository.update(dto, { where: { role_id }})
+    const role = this.getRoleById(role_id)
     return role
   }
 
-  async deleteRole(roleInfo: { role_id: string }) {
-    await this.roleRepository.destroy({ where: roleInfo})
+  async deleteRole(role_id: string) {
+    await this.roleRepository.destroy({ where: { role_id } })
     return { deleted: true }
   }
 

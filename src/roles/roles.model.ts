@@ -11,6 +11,7 @@ import { Group } from '../groups/groups.model'
 import { ProjectRoleForGroup } from '../roles/project-roles-for-groups.model'
 import { Organization } from '../organizations/organizations.model'
 import { OrganizationRoleForGroup } from '../roles/organization-roles-for-groups.model'
+import {ApiProperty} from '@nestjs/swagger'
 
 export interface RoleCreationAttrs {
     name: string
@@ -23,18 +24,23 @@ export interface RoleCreationAttrs {
 @Table({tableName: 'roles'})
 export class Role extends Model<Role, RoleCreationAttrs> {
 
+  @ApiProperty({ example: '1faeb6ef-9b74-4315-93d6-dde1c52a0f87', description: 'Unique identifier'})
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4, primaryKey: true, allowNull: false })
   role_id: string
 
+  @ApiProperty({ example: 'RN_ADMIN', description: 'Name'})
   @Column({ type: DataType.STRING, allowNull: false })
   name: string
 
+  @ApiProperty({ example: 'RD_ADMIN', description: 'Description'})
   @Column({ type: DataType.TEXT })
   description: string
 
+  @ApiProperty({ example: 'project-admin', description: 'Key'})
   @Column({ type: DataType.STRING, defaultValue: '', allowNull: false })
   key: string
 
+  @ApiProperty({ example: ["profile_updateself", "user_read_basic"], description: 'Permissions'})
   @Column({ type: DataType.JSONB, allowNull: false })
   permissions: string[]
 

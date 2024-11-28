@@ -85,14 +85,14 @@ export class ProjectsService {
     return project
   }
 
-  async updateProject(dto: CreateProjectDto) {
-    await this.projectRepository.update(dto, { where: { project_id: dto.project_id }})
-    const project = this.getProjectById(dto.project_id)
+  async updateProject(project_id: string, dto: CreateProjectDto) {
+    await this.projectRepository.update(dto, { where: { project_id }})
+    const project = this.getProjectById(project_id)
     return project
   }
 
-  async deleteProject(projectInfo: { project_id: string }) {
-    await this.projectRepository.destroy({ where: projectInfo})
+  async deleteProject(project_id: string) {
+    await this.projectRepository.destroy({ where: { project_id }})
     return { deleted: true }
   }
 
@@ -102,8 +102,8 @@ export class ProjectsService {
     return project.project_users
   }
 
-  async createProjectRole(dto: TProjectRole) {
-    const project = await this.projectRepository.findOne({ where: { project_id: dto.project_id } })
+  async createProjectRole(project_id: string, dto: TProjectRole) {
+    const project = await this.projectRepository.findOne({ where: { project_id }})
     const role = await this.rolesService.getRoleById(dto.role_id)
     const user = await this.usersService.getUserById(dto.user_id)
     if (project && role && user) {
@@ -121,9 +121,8 @@ export class ProjectsService {
     throw new HttpException('Пользователь или роль не найдены', HttpStatus.NOT_FOUND)
   }
 
-  async deleteProjectRoles(projectRoles: TProjectUserRole[]) {
+  async deleteProjectRoles(project_id: string, projectRoles: TProjectUserRole[]) {
     const reqList = projectRoles.map(async (prRoleInfo) => {
-      const project_id = prRoleInfo.project_id
       const user_id = prRoleInfo.user.user_id
       const roles = prRoleInfo.roles.map(r => r.role_id)
       const project = await this.projectRepository.findOne({ where: { project_id } })

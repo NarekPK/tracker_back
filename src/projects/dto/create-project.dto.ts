@@ -1,11 +1,18 @@
-// import { ApiProperty } from '@nestjs/swagger'
-// import {IsEmail, IsString, Length} from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateProjectDto {
-  readonly name: string
-  readonly description: string
-  readonly project_owner: string
+
   readonly project_id?: string
+
+  @ApiProperty({ example: 'Project', description: 'Name'})
+  readonly name: string
+
+  @ApiProperty({ example: '', description: 'Description'})
+  readonly description: string
+
+  @ApiProperty({ example: '1faeb6ef-9b74-4315-93d6-dde1c52a0f87', description: 'Project owner'})
+  readonly project_owner: string
+
   readonly workspace_id: string
 }
 

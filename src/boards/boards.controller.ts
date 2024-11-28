@@ -3,38 +3,51 @@ import { BoardsService } from './boards.service'
 import { CreateBoardDto } from './dto/create-board.dto'
 import { AccessTokenGuard } from '../common/guards/access-token.guard'
 import { Request } from 'express'
+import { Board } from './boards.model'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
+@ApiTags('Boards')
 @Controller('boards')
 export class BoardsController {
   constructor(private boardsService: BoardsService) {}
 
+  @ApiOperation({summary: 'Create board'})
+  @ApiResponse({status: 200, type: Board})
   @UseGuards(AccessTokenGuard)
-  @Post('create-board')
-  create(@Body() dto: CreateBoardDto, project_id) {
-    return this.boardsService.createBoard(dto, project_id)
+  @Post()
+  create(@Body() dto: CreateBoardDto) {
+    return this.boardsService.createBoard(dto)
   }
 
+  @ApiOperation({summary: 'Get current workspace boards'})
+  @ApiResponse({status: 200, type: [Board]})
   @UseGuards(AccessTokenGuard)
-  @Get('get-boards')
+  @Get()
   getWorkspaceBoards(@Req() request: Request) {
     return this.boardsService.getWorkspaceBoards(request.user['workspace_id'])
   }
 
+  @ApiOperation({summary: 'Get board'})
+  @ApiResponse({status: 200, type: Board})
   @UseGuards(AccessTokenGuard)
-  @Get('get-board/:id')
+  @Get(':id')
   getBoardById(@Param('id') id: string) {
     return this.boardsService.getBoardById(id)
   }
 
+  @ApiOperation({summary: 'Update board'})
+  @ApiResponse({status: 200, type: Board})
   @UseGuards(AccessTokenGuard)
-  @Patch('update-board')
-  updateBoard(@Body() boardDto: CreateBoardDto) {
-    return this.boardsService.updateBoard(boardDto)
+  @Patch(':id')
+  updateBoard(@Param('id') id: string, @Body() boardDto: CreateBoardDto) {
+    return this.boardsService.updateBoard(id, boardDto)
   }
 
+  @ApiOperation({summary: 'Delete board'})
+  @ApiResponse({status: 200, type: Boolean})
   @UseGuards(AccessTokenGuard)
-  @Delete('delete-board')
-  deleteBoard(@Body() boardInfo: { board_id: string }) {
-    return this.boardsService.deleteBoard(boardInfo)
+  @Delete(':id')
+  deleteBoard(@Param('id') id: string) {
+    return this.boardsService.deleteBoard(id)
   }
 }

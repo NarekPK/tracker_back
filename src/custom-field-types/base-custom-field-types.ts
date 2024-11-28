@@ -20,13 +20,13 @@ export const baseCustomFieldTypes = [
   {
     "field_type": "date",
     "category": "date",
-    "name": "CFT_DATA",
+    "name": "CFT_DATE",
     "is_multiple": false
   },
   {
     "field_type": "date and time",
     "category": "date and time",
-    "name": "CFT_DATA_TIME",
+    "name": "CFT_DATE_TIME",
     "is_multiple": false
   },
   {

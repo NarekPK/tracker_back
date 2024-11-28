@@ -107,16 +107,16 @@ export class AuthService {
       }, customFields)
       const board = await this.boardsService.createBoard({
           name: 'Demo Board',
-          workspace_id: newWorkspace?.workspace_id
-        },
-        project.project_id
-      )
+          workspace_id: newWorkspace?.workspace_id,
+          project_id: project.project_id
+        })
       const stateField = customFields.find(f => f.key === 'state')
 
-      await this.boardsService.updateBoard({
+      await this.boardsService.updateBoard(
+        board.board_id,
+        {
           columns_field_id: stateField.custom_field_id,
-          columns_options: getBaseColumnOptions(stateField.options),
-          board_id: board.board_id
+          columns_options: getBaseColumnOptions(stateField.options)
         }
       )
     }
@@ -159,7 +159,7 @@ export class AuthService {
   }
 
   async logout(user_id: string) {
-    this.usersService.updateUser({ refresh_token: null, user_id })
+    this.usersService.updateUser(user_id, { refresh_token: null })
   }
 
   async refreshTokens(user_id: string, refreshToken: string) {
@@ -192,7 +192,7 @@ export class AuthService {
 
   async updateRefreshToken(user_id: string, refresh_token: string) {
     const hashedRefreshToken = await this.hashData(refresh_token)
-    await this.usersService.updateUser({ refresh_token: hashedRefreshToken, user_id })
+    await this.usersService.updateUser(user_id, { refresh_token: hashedRefreshToken })
   }
 
   getCookieWithJwtAccessToken(user_id: string, email: string, workspace_id: string) {

@@ -10,9 +10,6 @@ export class GroupsService {
 
   async createGroup(dto: CreateGroupDto) {
     const group = await this.groupRepository.create(dto)
-    // const role = await this.roleService.getRoleByValue('ADMIN')
-    // await user.$set('roles', [role.id])
-    // user.roles = [role]
     return group
   }
 
